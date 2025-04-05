@@ -1,0 +1,101 @@
+#!/sbin/sh
+
+#
+# Control Method for zabbix_agentd (/lib/svc/method/init.zabbix_agentd)
+# Written by Yuri Voinov (C) 2007-2025
+#
+# ident "@(#)zabbix_agentd.sh    2.5    05/04/25 YV"
+#
+. /lib/svc/share/smf_include.sh
+. /lib/svc/share/net_include.sh
+
+#############
+# Variables #
+#############
+
+# Base dir for installed Zabbix adent
+BASE_DIR="/usr/local"
+# TMP location
+TMP="/tmp"
+
+#
+# OS Commands location variables
+#
+CAT=`which cat`
+CUT=`which cut`
+ECHO=`which echo`
+KILL=`which kill`
+RM=`which rm`
+UNAME=`which uname`
+
+# Zabbix agent files paths
+ZABBIX_AGENT_PATH="$BASE_DIR""/sbin"
+# Zabbix agent files
+ZABBIX_AGENT_BIN_FILE="zabbix_agentd"
+
+# OS release
+OS_VER=`$UNAME -r|$CUT -f2 -d"."`
+OS_NAME=`$UNAME -s|$CUT -f1 -d" "`
+
+###############
+# Subroutines #
+###############
+
+check_os ()
+{
+ # Check OS version
+ if [ ! "$OS_NAME" = "SunOS" -a ! "$OS_VER" -lt "10" ]; then
+  $ECHO "ERROR: Unsupported OS $OS_NAME $OS_VER"
+  $ECHO "Exiting..."
+  exit 1
+ fi
+}
+
+startproc()
+{
+# Start Zabbix agent daemon
+ program=$1
+
+ $ZABBIX_AGENT_PATH/$program
+}
+
+stopproc()
+{
+# Stop Zabbix agent daemon
+ program=$1
+ $KILL `$CAT $TMP/$program.pid` && $RM $TMP/$program.pid
+}
+
+##############
+# Main block #
+##############
+
+# Check OS version
+check_os
+
+# Check daemon installed
+if [ ! -f "$ZABBIX_AGENT_PATH/$ZABBIX_AGENT_BIN_FILE" -a ! -x "$ZABBIX_AGENT_PATH/$ZABBIX_AGENT_BIN_FILE" ]; then
+ $ECHO "ERROR: Zabbix agent not found!"
+ $ECHO "Exiting..."
+ exit 1
+fi
+
+##########################################################
+
+case "$1" in
+"restart")
+  stopproc $ZABBIX_AGENT_BIN_FILE
+  startproc $ZABBIX_AGENT_BIN_FILE
+  ;;
+"start")
+  startproc $ZABBIX_AGENT_BIN_FILE
+  ;;
+"stop")
+  stopproc $ZABBIX_AGENT_BIN_FILE
+  ;;
+*)
+  $ECHO "Usage: $0 { start | stop | restart }"
+  exit 1
+esac
+
+exit 0
