@@ -15,8 +15,6 @@
 
 # Base dir for installed Zabbix adent
 BASE_DIR="/usr/local"
-# TMP location
-TMP="/tmp"
 
 #
 # OS Commands location variables
@@ -25,6 +23,7 @@ CAT=`which cat`
 CUT=`which cut`
 ECHO=`which echo`
 KILL=`which kill`
+PGREP=`which pgrep`
 RM=`which rm`
 UNAME=`which uname`
 
@@ -63,7 +62,7 @@ stopproc()
 {
 # Stop Zabbix agent daemon
  program=$1
- $KILL `$CAT $TMP/$program.pid` && $RM $TMP/$program.pid
+ $KILL -s TERM `$PGREP $program` >/dev/null 2>&1
 }
 
 ##############
