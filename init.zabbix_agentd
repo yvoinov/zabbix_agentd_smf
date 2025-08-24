@@ -60,7 +60,7 @@ stopproc()
 # Stop Zabbix agent daemon
  program=$1
 
- $PKILL -TERM $program
+ $PKILL -KILL $program
 }
 
 ##############
