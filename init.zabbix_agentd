@@ -19,12 +19,9 @@ BASE_DIR="/usr/local"
 #
 # OS Commands location variables
 #
-CAT=`which cat`
 CUT=`which cut`
 ECHO=`which echo`
-KILL=`which kill`
-PGREP=`which pgrep`
-RM=`which rm`
+PKILL=`which pkill`
 UNAME=`which uname`
 
 # Zabbix agent files paths
@@ -62,7 +59,8 @@ stopproc()
 {
 # Stop Zabbix agent daemon
  program=$1
- $KILL -s TERM `$PGREP $program` >/dev/null 2>&1
+
+ $PKILL -TERM $program
 }
 
 ##############
