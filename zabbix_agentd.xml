@@ -45,6 +45,20 @@
                 <service_fmri value='svc:/system/utmp' />
         </dependency>
 
+        <dependency name='net-initial'
+                grouping='require_all'
+                restart_on='none'
+                type='service'>
+                <service_fmri value='svc:/network/initial' />
+        </dependency>
+
+        <dependency name='net-service'
+                grouping='require_all'
+                restart_on='none'
+                type='service'>
+                <service_fmri value='svc:/network/service' />
+        </dependency>
+
         <exec_method
                 type='method'
                 name='start'
