@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
 <!--   Manifest-file for zabbix_agentd, put this file in
-       /var/svc/manifest/network/zabbix_agentd.xml 
+       /var/svc/manifest/network/zabbix_agentd.xml
        and run #svccfg import /var/svc/manifest/network/zabbix_agentd.xml
        Written by Yuri Voinov (C) 2007-2025
 -->
@@ -77,17 +77,20 @@
                 exec='/lib/svc/method/init.zabbix_agentd %m'
                 timeout_seconds='120' />
 
-        <property_group name='startd'
+        <property_group
+                name='startd'
                 type='framework'>
                 <!-- sub-process core dumps shouldn't restart session -->
                 <propval name='ignore_error'
                     type='astring' value='core,signal' />
         </property_group>
 
-        <property_group name='general' type='framework'>
+        <property_group
+                name='general'
+                type='framework'>
                 <!-- to start stop zabbix agent -->
-                <propval name='action_authorization' type='astring'
-                        value='solaris.smf.manage' />
+                <propval name='action_authorization'
+                    type='astring' value='solaris.smf.manage' />
         </property_group>
 
         <stability value='Unstable' />
