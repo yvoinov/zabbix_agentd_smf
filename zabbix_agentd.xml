@@ -59,6 +59,15 @@
                 <service_fmri value='svc:/network/service' />
         </dependency>
 
+        <dependency name='net-ntp'
+                grouping='require_any'
+                restart_on='none'
+                type='service'>
+                <service_fmri value='svc:/network/ntp' />
+                <service_fmri value='svc:/network/ntp4' />
+                <service_fmri value='svc:/network/cswntp' />
+        </dependency>
+
         <exec_method
                 type='method'
                 name='start'
